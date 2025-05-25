@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textgenerator für Support-Nachrichten</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .option-group {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #3498db;
+            color: #fff;
+            border: 0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #generateBtn {
+            background-color: #27ae60;
+        }
+
+        #generateBtn:hover {
+            background-color: #2ecc71;
+        }
+
+        #clearBtn {
+            background-color: #e74c3c;
+        }
+
+        #clearBtn:hover {
+            background-color: #c0392b;
+        }
+
+        .copy-btn {
+            background-color: #34495e;
+        }
+
+        .copy-btn:hover {
+            background-color: #2c3e50;
+        }
+
+        #outputContainer {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        #outputText {
+            white-space: pre-wrap;
+            min-height: 100px;
+        }
+
+        .conditional-options {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #cce5ff;
+        }
+
+        .zoll-section {
+            background-color: #fff8e1;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 25px;
+            border: 1px solid #ffecb3;
+        }
+
+        .zoll-section h2 {
+            margin-top: 0;
+        }
+
+        .zoll-section ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+
+        .zoll-section li {
+            margin-bottom: 8px;
+        }
+
+        .rechner-section {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 25px 0;
+            border: 1px solid #a5d6a7;
+        }
+
+        .rechner-section h2 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+
+        .rechner-option {
+            margin-bottom: 15px;
+        }
+
+        #garantieOutput {
+            white-space: pre-wrap;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+            min-height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Textgenerator für Support-Nachrichten</h1>
+
+        <!-- Name -->
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Dein Name eingeben">
+
+        <!-- Kontaktoptionen -->
+        <div class="options">
+            <div class="option-group">
+                <label>Kontaktart:</label>
+                <div><input type="radio" id="tk" name="contactType" value="TK" checked><label for="tk">TK</label></div>
+                <div><input type="radio" id="email" name="contactType" value="per Email"><label
+                        for="email">Email</label></div>
+            </div>
+
+            <div class="option-group">
+                <label>Kontaktperson:</label>
+                <div><input type="radio" id="cnee" name="contactPerson" value="Cnee" checked><label
+                        for="cnee">Cnee</label></div>
+                <div><input type="radio" id="cnor" name="contactPerson" value="Cnor"><label for="cnor">Cnor</label>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <label>Fehlende Unterlagen:</label>
+                <div><input type="radio" id="missingDocsYes" name="missingDocs" value="Ja"><label
+                        for="missingDocsYes">Ja</label></div>
+                <div><input type="radio" id="missingDocsNo" name="missingDocs" value="Nein" checked><label
+                        for="missingDocsNo">Nein</label></div>
+            </div>
+        </div>
+
+        <!-- Bedingte Optionen -->
+        <div id="missingDocsOptions" class="conditional-options" style="display:none;">
+            <label>Art der Unterlagen:</label>
+            <select id="docType">
+                <option value="exportDoc">Ausfuhrdokument</option>
+            </select>
+        </div>
+
+        <div id="damageImageOptions" class="conditional-options" style="display:none;">
+            <label>Bilder vorhanden?</label>
+            <div><input type="radio" id="imagesYes" name="damageImages" value="Ja"><label for="imagesYes">Ja</label>
+            </div>
+            <div><input type="radio" id="imagesNo" name="damageImages" value="Nein" checked><label
+                    for="imagesNo">Nein</label></div>
+        </div>
+
+        <!-- Textbausteine -->
+        <label for="textOption">Textbausteine:</label>
+        <select id="textOption">
+            <option value="notReceived">SDG noch nicht erhalten</option>
+            <option value="delayedDelivery">SDG hätte schon um 09:00 da sein müssen</option>
+            <option value="damaged">SDG wurde beschädigt</option>
+            <option value="totallyDamaged">SDG kam total beschädigt an</option>
+            <option value="compensation">SDG kam zu spät an – Entschädigung</option>
+            <option value="partiallyDamaged">SDG teilweise beschädigt</option>
+            <option value="unknownPerson">SDG an Unbekannt übergeben</option>
+            <option value="wrongPerson">SDG falsch zugestellt</option>
+            <option value="customs">SDG beim Zoll</option>
+            <option value="statusInquiry">Statusanfrage</option>
+            <option value="branchDelivery">SDG in Filiale</option>
+            <option value="driverComplaint">Beschwerde KUFAss</option>
+            <option value="drivingComplaint">Fahrverhalten</option>
+            <option value="addressProblem">Lieferadressproblem</option>
+            <option value="stopShipment">SDG stoppen</option>
+            <option value="changeAddress">Adresse ändern</option>
+            <option value="redirectPackage">Paket umleiten</option>
+            <option value="deliveredButNotReceived">Zugestellt nicht erhalten</option>
+            <option value="moneyBackGuarantee">MoneyBack-Garantie</option>
+            <option value="returnReason">Rücksendegrund</option>
+            <option value="claimGuarantee">Claim Guarantee</option>
+            <option value="complaintDelay">Complaint Delay</option>
+            <option value="traceTransitDelay">Trace Transit Delay</option>
+        </select>
+
+        <!-- Buttons -->
+        <div class="buttons">
+            <button id="generateBtn">Text generieren</button>
+            <button id="clearBtn">Zurücksetzen</button>
+        </div>
+
+        <!-- Ausgabebereich -->
+        <div id="outputContainer">
+            <label>Generierter Text:</label>
+            <div id="outputText"></div>
+            <button id="copyBtn" class="copy-btn">Text kopieren</button>
+        </div>
+
+        <!-- Rechner -->
+        <div class="rechner-section">
+            <h2>Money-Back-Guarantee Rechner</h2>
+            <div class="rechner-option">
+                <label>Sendungsart:</label>
+                <select id="sendungsart">
+                    <option value="zeitoption">Sendungen mit Zeitoptionen</option>
+                    <option value="eod_eu">ECX + TDD (EU)</option>
+                    <option value="eod_wpx">WPX + DOX (Drittland)</option>
+                </select>
+            </div>
+
+            <div class="rechner-option">
+                <label>Verspätungsart:</label>
+                <select id="verspaetungsart">
+                    <option value="zeitoption">Zeitoption verpasst</option>
+                    <option value="regellaufzeit">+1 Tag Überschreitung</option>
+                </select>
+            </div>
+
+            <button onclick="berechneGarantie()">Antwort generieren</button>
+            <div id="garantieOutput"></div>
+        </div>
+
+        <!-- Zoll-Info -->
+        <div class="zoll-section">
+            <h2>Zollinformationen</h2>
+            <ul>
+                <li><strong>ATLAS-Outbound:</strong> Bei fehlendem MRN schriftlich reklamieren</li>
+                <li><strong>Status >1 Woche:</strong> Eskalation erforderlich</li>
+                <li><strong>DHL4YOU:</strong> leipzig.dhl4you@dhl.com</li>
+                <li><strong>EORI:</strong> lej-customs@dhl.com</li>
+                <li><strong>Incoterms:</strong>
+                    <br>EXW: Verkäufer stellt Ware bereit
+                    <br>DAP: Käufer zahlt Zoll
+                    <br>DDP: Verkäufer zahlt alles
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Textgenerator-Logik
+        let savedName = '';
+        const textBlocks = {
+            notReceived: `KD hat sein Paket noch nicht erhalten und wartet bereits seit mehreren Tagen darauf. Laut Tracking sollte es bereits zugestellt sein. Bitte um Überprüfung des aktuellen Status und schnellstmögliche Zustellung.`, delayedDelivery: `SDG hätte laut Zusage bereits um 09:00 Uhr zugestellt werden sollen, ist aber immer noch nicht beim KDn eingetroffen. KD wartet dringend auf die Lieferung und bittet um sofortige Klärung der Verzögerung und schnellstmögliche Zustellung.`, damaged: `KD meldet, dass das zugestellte Paket stark beschädigt wurde. Der Inhalt ist möglicherweise in Mitleidenschaft gezogen worden. Bitte um Einleitung des Schadensregulierungsverfahrens und Kontaktaufnahme mit dem KDn.`, totallyDamaged: `KD meldet, dass das zugestellte Paket bei Empfang total beschädigt war. Der gesamte Inhalt wurde zerstört und ist nicht mehr verwendbar. Bitte um Bearbeitung des Schadensfalls und schnellstmögliche Entschädigung des KDn.`, compensation: `SDG wurde mit erheblicher Verspätung zugestellt, was für den KDn zu Unannehmlichkeiten geführt hat. KD fordert eine angemessene Entschädigung und bittet um Kontaktaufnahme bezüglich des weiteren Vorgehens.`, partiallyDamaged: `SDG wurde zugestellt, weist jedoch äußerliche Beschädigungen auf. Der Inhalt ist teilweise beschädigt. KD bittet um Rückmeldung zur Schadensregulierung.`, unknownPerson: `SDG wurde laut Tracking an eine Person übergeben, die der KD nicht kennt. Bitte um Aufklärung und Unterstützung bei der Nachverfolgung der SDG.`, wrongPerson: `SDG wurde an eine falsche Person zugestellt, die der KD nicht kennt. Bitte um Klärung und erneute Zustellung.`, customs: `SDG befindet sich im Ausland beim Zoll; es fehlen Unterlagen. KD bittet um Information, welche Dokumente benötigt werden.`, statusInquiry: `KD erkundigt sich lediglich nach dem aktuellen Status der SDG. Bitte um kurze Rückmeldung.`, branchDelivery: `SDG wurde in eine Filiale gebracht, KD wünscht Zustellung an die Heimatadresse. ODD bereits veranlasst – bitte bestätigen.`, driverComplaint: `KD beschwert sich über das unprofessionelle Verhalten des KUFAss. Bitte um Prüfung und Rückmeldung.`, drivingComplaint: `KD meldet riskantes Fahrverhalten des KUFAs. Bitte Vorfall prüfen und Maßnahmen ergreifen.`, addressProblem: `Unvollständige oder fehlerhafte Lieferadresse im System. Bitte korrigieren und erneut zustellen.`, stopShipment: `Absender möchte seine SDG stoppen und zurückholen. Bitte Möglichkeiten prüfen und umsetzen, sofern noch nicht zugestellt.`, changeAddress: `Absender möchte die Lieferadresse ändern. Bitte Daten aktualisieren und Zustellung sicherstellen.`, redirectPackage: `Absender möchte das Paket an eine andere Adresse umleiten. Bitte prüfen und umsetzen, falls möglich.`, deliveredButNotReceived: `Laut Tracking zugestellt, KD hat das Paket jedoch nicht erhalten. Bitte Verbleib klären.`, moneyBackGuarantee: `KD beruft sich auf die MoneyBack-Garantie wegen Nichteinhaltung der Lieferzeit. Rückerstattung bereits zugesagt – bitte bearbeiten.`, returnReason: `KD möchte wissen, warum die Sendung zurückgeschickt wurde. Bitte Grund der Rücksendung prüfen und KD entsprechend informieren.`
+        };
+
+        const damageRelatedOptions = ['damaged', 'totallyDamaged', 'partiallyDamaged'];
+        const elements = {
+            nameInput: document.getElementById('name'),
+            generateBtn: document.getElementById('generateBtn'),
+            clearBtn: document.getElementById('clearBtn'),
+            outputText: document.getElementById('outputText'),
+            copyBtn: document.getElementById('copyBtn'),
+            textOption: document.getElementById('textOption'),
+            damageImageBlock: document.getElementById('damageImageOptions')
+        };
+
+        // Event Listener
+        elements.nameInput.addEventListener('input', () => savedName = elements.nameInput.value);
+        elements.generateBtn.addEventListener('click', generateText);
+        elements.clearBtn.addEventListener('click', clearForm);
+        elements.copyBtn.addEventListener('click', copyToClipboard);
+
+        document.querySelectorAll('input[name="missingDocs"]').forEach(radio => {
+            radio.addEventListener('change', toggleMissingDocs);
+        });
+
+        elements.textOption.addEventListener('change', handleTextOptionChange);
+
+        // Funktionen
+        function generateText() {
+            savedName = elements.nameInput.value || savedName;
+            const contactType = document.querySelector('input[name="contactType"]:checked').value;
+            const contactPerson = document.querySelector('input[name="contactPerson"]:checked').value;
+            const selectedKey = elements.textOption.value;
+
+            let text = textBlocks[selectedKey];
+
+            if (document.getElementById('missingDocsYes').checked && selectedKey === 'customs') {
+                text += ' Laut GATSY: Ausfuhrdokument benötigt.';
+            }
+
+            if (damageRelatedOptions.includes(selectedKey) && document.getElementById('imagesYes').checked) {
+                text += ' Bilder folgen per Mail.';
+            }
+
+            elements.outputText.textContent = `${contactType}, ${contactPerson}\n\n${text}\n\nLG, ${savedName}, FO/FRA`;
+        }
+
+        function clearForm() {
+            document.getElementById('tk').checked = true;
+            document.getElementById('cnee').checked = true;
+            document.getElementById('missingDocsNo').checked = true;
+            document.getElementById('imagesNo').checked = true;
+            elements.textOption.selectedIndex = 0;
+            document.getElementById('missingDocsOptions').style.display = 'none';
+            elements.damageImageBlock.style.display = 'none';
+            elements.outputText.textContent = '';
+            elements.nameInput.value = savedName;
+        }
+
+        function copyToClipboard() {
+            navigator.clipboard.writeText(elements.outputText.textContent)
+                .then(() => {
+                    elements.copyBtn.textContent = 'Kopiert!';
+                    setTimeout(() => elements.copyBtn.textContent = 'Text kopieren', 1500);
+                });
+        }
+
+        function toggleMissingDocs() {
+            document.getElementById('missingDocsOptions').style.display =
+                (this.value === 'Ja' && elements.textOption.value === 'customs') ? 'block' : 'none';
+        }
+
+        function handleTextOptionChange() {
+            document.getElementById('missingDocsOptions').style.display =
+                (document.getElementById('missingDocsYes').checked && this.value === 'customs') ? 'block' : 'none';
+
+            elements.damageImageBlock.style.display =
+                damageRelatedOptions.includes(this.value) ? 'block' : 'none';
+        }
+
+        // Rechner-Logik
+        const garantieMatrix = {
+            zeitoption: {
+                zeitoption: { tdi: "Zeitoption-Erstattung", tdd: "Zeitoption-Erstattung", gema: "Claim Guarantee" },
+                regellaufzeit: { tdi: "Zeitoption +20%", tdd: "Zeitoption +50%", gema: "Complaint Delay" }
+            },
+            eod_eu: {
+                regellaufzeit: { tdi: "20% Basispreis", tdd: "50% Basispreis", gema: "Complaint Delay" }
+            },
+            eod_wpx: {
+                regellaufzeit: { tdi: "BO-Prüfung", tdd: "-", gema: "Trace Transit Delay" }
+            }
+        };
+
+        function berechneGarantie() {
+            const sendungsart = document.getElementById('sendungsart').value;
+            const verspaetungsart = document.getElementById('verspaetungsart').value;
+            const result = garantieMatrix[sendungsart]?.[verspaetungsart];
+
+            const output = result
+                ? `GEMA-Request: ${result.gema}\nTDI: ${result.tdi}\nTDD: ${result.tdd}\nHandlung: ${getHandlungsempfehlung(result.gema)}`
+                : "⚠️ Kombination ungültig! BO kontaktieren.";
+
+            document.getElementById('garantieOutput').innerText = output;
+        }
+
+        function getHandlungsempfehlung(gemaType) {
+            return {
+                "Claim Guarantee": "GEMA-Code 901",
+                "Complaint Delay": "Beschwerde + Report",
+                "Trace Transit Delay": "Transit prüfen + Eskalation"
+            }[gemaType] || "Standardprozedur";
+        }
+    </script>
+</body>
+
+</html>
