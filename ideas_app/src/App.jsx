@@ -1165,7 +1165,6 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
 
   return (
     <div
-      className="idea-row"
       style={{
         borderBottom: "1px solid #1e1e26",
         background: isFav ? "#1a0f0f" : "transparent",
@@ -1173,7 +1172,6 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
       }}
     >
       <div
-        className="idea-row-grid"
         style={{
           display: "grid",
           gridTemplateColumns:
@@ -1344,7 +1342,6 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           }}
         >
           <div
-            className="idea-details-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -1597,32 +1594,8 @@ export default function App() {
         .chip.fav-chip { border-color: #e11d48; color: #e11d48; }
         .chip.fav-chip.active { background: #e11d48; border-color: #e11d48; color: #fff; }
         .chip.fav-chip:hover { border-color: #e11d48; color: #fff; background: #e11d48; }
-        .scroll-x { overflow-x: auto; }
-        .table-wrap { width: 100%; min-width: 0; }
-        .idea-row-grid {
-          grid-template-columns: 1fr;
-          align-items: flex-start;
-          row-gap: 8px;
-        }
-        .idea-details-grid {
-          grid-template-columns: 1fr;
-        }
-        .table-header {
-          display: none;
-        }
-        @media (min-width: 768px) {
-          .table-wrap { min-width: 800px; }
-          .idea-row-grid {
-            grid-template-columns: 28px 1fr 90px 80px 100px 110px 36px 36px;
-            row-gap: 0;
-          }
-          .idea-details-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-          .table-header {
-            display: grid;
-          }
-        }
+        .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .table-wrap { min-width: 800px; }
         .stat-n { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #c9a84c; }
         .stat-l { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         .fav-btn:hover { background: #e11d4818 !important; }
@@ -1910,7 +1883,6 @@ export default function App() {
           <div className="scroll-x">
             <div className="table-wrap">
               <div
-                className="table-header"
                 style={{
                   display: "grid",
                   gridTemplateColumns:
