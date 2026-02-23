@@ -1595,7 +1595,10 @@ export default function App() {
         .chip.fav-chip.active { background: #e11d48; border-color: #e11d48; color: #fff; }
         .chip.fav-chip:hover { border-color: #e11d48; color: #fff; background: #e11d48; }
         .scroll-x { overflow-x: auto; }
-        .table-wrap { min-width: 800px; }
+        .table-wrap { width: 100%; min-width: 0; }
+        @media (min-width: 768px) {
+          .table-wrap { min-width: 800px; }
+        }
         .stat-n { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #c9a84c; }
         .stat-l { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         .fav-btn:hover { background: #e11d4818 !important; }
