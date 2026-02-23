@@ -1647,6 +1647,7 @@ export default function App() {
         .idea-meta-mobile { display: none; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
         .meta-chip { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
         @media (max-width: 767px) {
+          .table-wrap { min-width: 100% !important; }
           .table-header { display: none !important; }
           .idea-row-grid { grid-template-columns: 28px 1fr 36px 36px !important; align-items: flex-start !important; }
           .col-category, .col-direction, .col-difficulty, .col-budget { display: none !important; }
