@@ -1172,6 +1172,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
       }}
     >
       <div
+        className="idea-row-grid"
         style={{
           display: "grid",
           gridTemplateColumns:
@@ -1198,6 +1199,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           onClick={() => setOpen((o) => !o)}
         >
           <div
+            className="idea-title"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 13,
@@ -1228,6 +1230,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
             )}
           </div>
           <div
+            className="idea-desc"
             style={{
               fontFamily: "'DM Sans', sans-serif",
               fontSize: 11,
@@ -1236,8 +1239,50 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           >
             {idea.desc}
           </div>
+          <div className="idea-meta-mobile">
+            <span
+              className="meta-chip"
+              style={{
+                background: color + "22",
+                color,
+                border: `1px solid ${color}44`,
+              }}
+            >
+              {idea.category}
+            </span>
+            <span
+              className="meta-chip"
+              style={{
+                background: "#ffffff10",
+                color: "#bbb",
+                border: "1px solid #ffffff22",
+              }}
+            >
+              {idea.direction}
+            </span>
+            <span
+              className="meta-chip"
+              style={{
+                background: dColor + "22",
+                color: dColor,
+                border: `1px solid ${dColor}44`,
+              }}
+            >
+              {idea.difficulty}
+            </span>
+            <span
+              className="meta-chip"
+              style={{
+                background: "#c9a84c22",
+                color: "#c9a84c",
+                border: "1px solid #c9a84c44",
+              }}
+            >
+              {idea.budget}
+            </span>
+          </div>
         </div>
-        <span onClick={() => setOpen((o) => !o)}>
+        <span className="col-category" onClick={() => setOpen((o) => !o)}>
           <span
             style={{
               display: "inline-block",
@@ -1257,6 +1302,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           </span>
         </span>
         <span
+          className="col-direction"
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 12,
@@ -1265,7 +1311,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
         >
           {idea.direction}
         </span>
-        <span onClick={() => setOpen((o) => !o)}>
+        <span className="col-difficulty" onClick={() => setOpen((o) => !o)}>
           <span
             style={{
               display: "inline-block",
@@ -1283,6 +1329,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           </span>
         </span>
         <span
+          className="col-budget"
           style={{
             fontFamily: "'DM Sans', sans-serif",
             fontSize: 12,
@@ -1342,6 +1389,7 @@ function IdeaRow({ idea, isFav, onToggleFav }) {
           }}
         >
           <div
+            className="idea-details-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -1596,6 +1644,17 @@ export default function App() {
         .chip.fav-chip:hover { border-color: #e11d48; color: #fff; background: #e11d48; }
         .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         .table-wrap { min-width: 800px; }
+        .idea-meta-mobile { display: none; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .meta-chip { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+        @media (max-width: 767px) {
+          .table-header { display: none !important; }
+          .idea-row-grid { grid-template-columns: 28px 1fr 36px 36px !important; align-items: flex-start !important; }
+          .col-category, .col-direction, .col-difficulty, .col-budget { display: none !important; }
+          .idea-meta-mobile { display: flex; }
+          .idea-details-grid { grid-template-columns: 1fr !important; }
+          .idea-title { line-height: 1.25; }
+          .idea-desc { line-height: 1.45; }
+        }
         .stat-n { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 900; color: #c9a84c; }
         .stat-l { font-family: 'DM Sans', sans-serif; font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
         .fav-btn:hover { background: #e11d4818 !important; }
@@ -1883,6 +1942,7 @@ export default function App() {
           <div className="scroll-x">
             <div className="table-wrap">
               <div
+                className="table-header"
                 style={{
                   display: "grid",
                   gridTemplateColumns:
